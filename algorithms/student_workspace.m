@@ -19,7 +19,7 @@ end
 if read_only_vars.counter <= 100
     public_vars.desired_speed = 0.0;  
 elseif (read_only_vars.counter == 101)
-    public_vars.desired_speed = 0.6;
+    public_vars.desired_speed = 0.3;
 
     public_vars = init_kalman_filter(read_only_vars, public_vars);
 
