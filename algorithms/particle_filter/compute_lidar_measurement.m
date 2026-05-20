@@ -1,4 +1,4 @@
-function [measurement] = compute_lidar_measurement(map, pose, lidar_config)
+function [measurement] = compute_lidar_measurement(map, pose, lidar_config, lidar_range)
 % This function predicts what the sensor would "see" from the particle's perspective
 % by performing ray casting against the known map boundaries
 
@@ -19,10 +19,9 @@ for i = 1:num_rays
     % Filter out NaN values
     valid_hits = all_intersections(~any(isnan(all_intersections), 2), :); 
     
-    max_lidar_range = 10;
     if isempty(valid_hits)
     % If no intersection is found
-        measurement(i) = max_lidar_range;
+        measurement(i) = lidar_range;
     else
         % Compute Euclidean distances from the particle to all hit points
         distances = hypot(valid_hits(:, 1) - x, valid_hits(:, 2) - y); 

@@ -9,8 +9,7 @@ occupancy_grid_dim = size(read_only_vars.discrete_map.map);
 occupancy_grid = read_only_vars.discrete_map.map;
 ds = read_only_vars.map.discretization_step;
 
-radius_px = ceil(read_only_vars.agent_drive.interwheel_dist / ds * 1.5);
-occupancy_grid = dilate_map(occupancy_grid, radius_px);
+occupancy_grid = dilate_map(occupancy_grid);
 
 start_x = public_vars.estimated_pose(1);
 start_y = public_vars.estimated_pose(2);
@@ -79,14 +78,14 @@ while ~isempty(open_list)
                 continue;
             end
 
-            is_obstacle = (occupancy_grid(nj, ni) ~= 0);
+            is_obstacle = (occupancy_grid(nj, ni) == 100);
 
             if is_obstacle || closed_list(nj, ni)
                 continue;
             end
             
             dist = hypot(di, dj) * ds;
-            tentative_g = g_score(curr_j, curr_i) + dist;
+            tentative_g = g_score(curr_j, curr_i) + dist + occupancy_grid(nj, ni);
 
             if tentative_g < g_score(nj, ni)
                 g_score(nj, ni) = tentative_g;
