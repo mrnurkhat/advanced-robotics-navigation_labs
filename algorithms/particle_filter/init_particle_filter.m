@@ -18,7 +18,7 @@ function [public_vars] = init_particle_filter(read_only_vars, public_vars)
         rand_x = x_min + (x_max - x_min) * rand();
         rand_y = y_min + (y_max - y_min) * rand();
         
-        if is_free_space([rand_x, rand_y], read_only_vars, dilated_grid, 25)
+        if is_free_space([rand_x, rand_y], read_only_vars, dilated_grid, 25) && check_gnss_denied_zone(rand_x, rand_y, read_only_vars.map.gnss_denied)
             valid_particles = valid_particles + 1;
             rand_dir = -pi + 2 * pi * rand();
 
