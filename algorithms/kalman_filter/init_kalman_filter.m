@@ -1,8 +1,10 @@
 function [public_vars] = init_kalman_filter(read_only_vars, public_vars)
 %INIT_KALMAN_FILTER Summary of this function goes here
 
-gnss_mean = mean(read_only_vars.gnss_history);
-gnss_cov = cov(read_only_vars.gnss_history);
+gnss_history = read_only_vars.gnss_history( ...
+    ~any(isnan(read_only_vars.gnss_history), 2), :);
+gnss_mean = mean(gnss_history);
+gnss_cov = cov(gnss_history);
 initial_dir_uncertainty = 10;
 
 public_vars.mu = [gnss_mean(1); gnss_mean(2); 0];

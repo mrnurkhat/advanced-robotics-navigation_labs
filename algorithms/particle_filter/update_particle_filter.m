@@ -90,7 +90,12 @@ function [public_vars] = update_particle_filter(read_only_vars, public_vars)
                     end
 
                     if idx_start <= num_keep
-                        new_particles(idx_start:num_keep, :) = repmat(new_particles(idx_start-1, :), num_keep - idx_start + 1, 1);
+                        if idx_start == 1
+                            new_particles(1:num_keep, :) = public_vars.particles(1:num_keep, :);
+                        else
+                            new_particles(idx_start:num_keep, :) = repmat(new_particles(idx_start-1, :), num_keep - idx_start + 1, 1);
+                    
+                        end
                     end
                 else
                     new_particles(1:num_keep, 1:3) = resample_particles(particles(:, 1:3), public_vars.weights, num_keep);
